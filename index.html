@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Top Flaay ✅</title>
+<title>Top Flaay Oro Laminado 18K</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="icon" type="image/png" href="img/diamante.png">
+
 </head>
 <body>
 
@@ -24,6 +26,7 @@
 <br>
 <!-- Header -->
 <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  
   <div class="w3-display-middle w3-margin-top w3-center">
   </div>
 </header>
@@ -43,13 +46,68 @@
     height: 50px; /* Ajusta la altura según necesites */
   }
 
+  .whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999; /* Siempre por encima de todo */
+        background-color: #25D366;
+        color: white;
+        border-radius: 50px;
+        padding: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        transition: 0.3s;
+    }
+
+    .whatsapp-float:hover {
+        background-color: #1ebe5d;
+    }
+
+    .whatsapp-float img {
+        width: 45px;
+        height: 45px;
+        margin-right: 10px;
+    }
+
+    .chat-label {
+        font-size: 16px;
+        color: white;
+    }
+
+    /* Ajuste para dispositivos móviles */
+    @media (max-width: 600px) {
+        .whatsapp-float {
+            bottom: 15px;
+            right: 15px;
+            padding: 10px;
+        }
+
+        .whatsapp-float img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .chat-label {
+            font-size: 14px;
+        }
+    }
 </style>
 
-
+  <!-- Botón flotante de WhatsApp -->
+  <a href="https://api.whatsapp.com/send?phone=TU_NUMERO&text=Hola,%20quiero%20más%20información%20sobre%20sus%20productos" 
+  class="whatsapp-float" target="_blank">
+   <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+   <span class="chat-label">💬 En línea</span>
+  </a>
 <!-- Page content -->
 <div class="w3-content w3-padding" style="max-width:1564px">
   
-  
+
+  <br>
   
   <!-- Carrusel de imágenes -->
 <div class="w3-content w3-display-container" style="max-width:600px; margin:auto;">
@@ -58,11 +116,13 @@
   
   <div class="w3-content w3-display-container" style="max-width:500px">
     <div class="marquee" style="align-items: center;">
+      <br>
+  
       <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16 w3-center">🔥 ¡Más vendidos! 🔥</h3>
       
     </div>
     <img class="carouselSlides" src="img/img1.png" style="width:50%">
-    <img class="carouselSlides" src="img/img1.png" style="width:50%">
+    <img class="carouselSlides" src="img/img2.png" style="width:50%">
 
     <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
     <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
@@ -81,7 +141,7 @@
     slideIndex++;
     if (slideIndex > slides.length) { slideIndex = 1 }
     slides[slideIndex - 1].style.display = "block";
-    setTimeout(showSlides, 6000); // Cambia la imagen cada 3 segundos
+    setTimeout(showSlides, 3000); // Cambia la imagen cada 3 segundos
   }
 
   function plusDivs(n) {
@@ -397,15 +457,44 @@
   
   <p>🔒 Compras 100% seguras | 💳 Aceptamos pagos con tarjeta y transferencias</p>
 
+  <!-- Métodos de pago con imágenes -->
+  <div class="payment-methods">
+    <img src="img/nequi.png" alt="Nequi" class="payment-logo">
+    <img src="img/daviplata.png" alt="Daviplata" class="payment-logo">
+    <img src="img/bancolombia.png" alt="Bancolombia" class="payment-logo">
+  </div>
+
   <p>📦 Envíos a todo el país | 🚀 Garantía de satisfacción</p>
 
   <p>
-    <a href="/terminos-y-condiciones" class="w3-hover-text-green">Términos y Condiciones</a> | 
-    <a href="/politica-de-privacidad" class="w3-hover-text-green">Política de Privacidad</a>
+    <a href="#" class="w3-hover-text-green">Términos y Condiciones</a> | 
+    <a href="#" class="w3-hover-text-green">Política de Privacidad</a>
   </p>
 
   <p>&copy; 2025 <strong>TOP FLAAY</strong>. Todos los derechos reservados.</p>
 </footer>
+
+<!-- Estilos personalizados -->
+<style>
+  .payment-methods {
+    margin: 10px 0;
+  }
+
+  .payment-logo {
+    width: 80px; /* Ajusta el tamaño de los logos */
+    height: 60px;
+    margin: 0 10px;
+    vertical-align: middle;
+    border-radius: 20%;
+  }
+
+  @media (max-width: 600px) {
+    .payment-logo {
+      width: 60px; /* Ajuste responsivo para móviles */
+    }
+  }
+</style>
+
 
 </body>
 </html>
