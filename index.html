@@ -11,23 +11,31 @@
 
   <title>Lectura de Tarot</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 1rem;
-      background-image: url('cristal.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: white;
-      text-align: center;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-      
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  /* Se elimina background-image */
+  color: white;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative; /* Para que el contenido se superponga sobre el video */
+  z-index: 1;
+}
+
+#videoFondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  object-fit: cover;
+}
+
     .input-container {
       background-color: rgba(0, 0, 0, 0.5);
       padding: 20px;
@@ -68,15 +76,16 @@
 
     @keyframes glow {
       from {
-        filter: drop-shadow(0 0 5px #fff490);
+        filter: drop-shadow(0 0 5px #ffffff);
       }
       to {
-        filter: drop-shadow(0 0 20px #fff490);
+        filter: drop-shadow(0 0 20px #fdfdfd);
       }
     }
   </style>
 </head>
 <body>
+
   <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
   Lectura de Tarot
 </h1>
@@ -89,6 +98,7 @@
 
 </div>
   <div class="input-container">
+
   <button onclick="generateTarotReading()">Mensaje del Tarot</button>
   <button onclick="generateLuckyNumber()">Preguntar Número de la Suerte</button>
   <button onclick="responderPreguntaSiNo()">Pregunta de Sí o No</button>
@@ -305,16 +315,64 @@ function generateTarotReading() {
 }
 
 
-  function generateLuckyNumber() {
-    clearInterval(intervalID);
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = "Sintonizando con tu energía interior...";
+function generateLuckyNumber() {
+  clearInterval(intervalID);
+  const resultDiv = document.getElementById('result');
 
-    setTimeout(() => {
-      const number = 1 + Math.floor(Math.random() * 99);
-      resultDiv.innerHTML = `<div style="font-size: 2rem;">Tu número de la suerte es: <strong>${number}</strong></div>`;
-    }, 3000);
-  }
+  resultDiv.innerHTML = `
+<div style="position: relative; display: block; width: 100%; max-width: 100%; text-align: center;">
+  <img src="numero.png" alt="Cargando..." style="
+    width: 100%;
+    object-fit: cover;
+    max-width: 370px;
+    height: auto;
+    border: none;
+    box-shadow: none;
+    display: block;
+    margin: 0 auto;
+  ">
+  
+  <!-- Capa con efecto humo blanco -->
+  <div style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 370px;
+    margin: 0 auto;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 60%, transparent 100%);
+    pointer-events: none;
+    filter: blur(8px);
+    z-index: 1;
+  "></div>
+
+<div id="numero-suerte" style="
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.95); /* blanco casi sólido */
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* mejora el contraste */
+  filter: none; /* sin desenfoque */
+  mix-blend-mode: normal; /* mezcla normal para mayor legibilidad */
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+"></div>
+
+</div>
+
+  `;
+
+  setTimeout(() => {
+    const number = 1 + Math.floor(Math.random() * 99);
+    document.getElementById('numero-suerte').textContent = number;
+  }, 5000);
+}
+
 
 
   function responderPreguntaSiNo() {
@@ -331,7 +389,10 @@ function generateTarotReading() {
 
 </script>
 
-
-
 </body>
+  <video autoplay muted loop playsinline id="videoFondo">
+  <source src="video.mp4" type="video/mp4">
+  Tu navegador no soporta video HTML5.
+</video>
+
 </html>

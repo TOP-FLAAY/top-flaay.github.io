@@ -1,0 +1,16 @@
+const cartasTarot = [
+      { nombre: "El Loco", mensaje: "Un nuevo comienzo está por venir. Mantén la mente abierta." },
+      { nombre: "La Muerte", mensaje: "El fin de una etapa da paso a la transformación." },
+      { nombre: "La Estrella", mensaje: "La esperanza y la inspiración guiarán tu camino." },
+      { nombre: "La Luna", mensaje: "Confía en tu intuición, no todo es lo que parece." },
+      { nombre: "El Sol", mensaje: "La felicidad y el éxito están cerca." },
+      { nombre: "La Torre", mensaje: "Prepárate para un cambio inesperado. Todo se reacomoda." },
+      { nombre: "La Emperatriz", mensaje: "Es tiempo de crear, nutrir y florecer." },
+      { nombre: "El Mago", mensaje: "Tienes todas las herramientas para lograr lo que deseas." },
+      { nombre: "La Justicia", mensaje: "Actúa con integridad, el equilibrio volverá." },
+      { nombre: "El Ermitaño", mensaje: "Busca respuestas dentro de ti, el silencio es sabio." }
+    ];
+
+La "precisión" depende de la habilidad del lector para interpretar las lecturas 
+y de tu propia receptividad a la lectura. Así que, en ese sentido, 
+no, las lecturas online no son "precisas" si tú mismo no tienes la habilidad suficiente para leer las cartas de una manera significativa.19/07/2024
