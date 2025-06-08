@@ -1,1525 +1,234 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<title>Top Flaay Oro Laminado 18K</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="icon" type="image/png" href="img/diamante.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lectura de Tarot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background-image: url('2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: white;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .input-container {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border-radius: 5px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 1.5rem;
+      min-height: 300px;
+      animation: glow 2s infinite alternate;
+    }
+
+    #result img {
+    max-width: 170px; /* más pequeño */
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 5px #fff490);
+      }
+      to {
+        filter: drop-shadow(0 0 20px #fff490);
+      }
+    }
+  </style>
 </head>
 <body>
-
-<!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="#home" class="w3-bar-item w3-button"><b>TOP FLAAY</b> Tienda online</a>
-    <div class="w3-right w3-hide-small">
-      <a href="#about" class="w3-bar-item w3-button">Nuestros productos</a>
-    </div>
-  </div>
-
-  <!-- Barra de promociones -->
-  <div class="promo-bar">
-    <span id="promoText">🔥 DESCUENTOS ESPECIALES PARA COMPRAS MAYORES A 180.000 🔥</span>
-  </div>
+  <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+  Lectura de Tarot
+</h1>
+<div id="acciones-info" style="margin-top: 5px; font-size: 0.9rem; background-color: rgba(0, 0, 0, 0.25); padding: 8px 12px; border-radius: 8px; max-width: 320px; color: #eee;">
+   <p>🎁 Sígueme y te doy un número de la suerte</p>
+    <p>🌹 Deja una rosa y te respondo una pregunta con sí o no</p>
+    <p>🍩 Deja una rosquilla y te doy una carta del tarot</p>
 </div>
 
-<!-- Estilos para la barra de promociones -->
-<style>
-  .promo-bar {
-      background-color: #f4ff5a; /* Amarillo vibrante */
-      color: #000000;
-      padding: 8px 0;
-      text-align: center;
-      font-weight: bold;
-      font-size: 14px;
-      width: 100%;
-      position: fixed;
-      top: 50px; /* Debajo de la barra de navegación */
-      z-index: 1000;
-  }
-</style>
+</div>
+  <div class="input-container">
+  <button onclick="generateTarotReading()">Consultar Tarot</button>
+  <button onclick="generateLuckyNumber()">Preguntar Número de la Suerte</button>
+  <button onclick="responderPreguntaSiNo()">Pregunta de Sí o No</button>
+  </div>
 
-<!-- Script para cambiar mensajes -->
+
+  <div id="result"></div>
+
 <script>
-  const mensajes = [
-      "🔥 ENVÍOS A TODO COLOMBIA 🔥",
-      "💳 COTIZA TUS ESTILOS, ESTAMOS PARA AYUDARTE 💳",
-      "💰 TRANSFERENCIA BANCARIA DISPONIBLE 💰",
-      "🎁 PROMOCIONES ESPECIALES ESTA SEMANA 🎁"
+  const frases = [
+    "Barajando las cartas del destino... 🔮",
+    "Conectando con tu energía astral... 🌌",
+    "Escuchando los susurros del universo... ✨",
+    "Interpretando señales del más allá... 🌠",
+    "Consultando al oráculo del tarot... 🃏",
+    "Visualizando tu camino espiritual... 🌙"
   ];
-  let index = 0;
 
-  function cambiarMensaje() {
-      document.getElementById("promoText").innerText = mensajes[index];
-      index = (index + 1) % mensajes.length;
+  const todasLasCartas = [
+    { nombre: "el_loco", alt: "El Loco" },
+    { nombre: "la_muerte", alt: "La Muerte" },
+    { nombre: "la_estrella", alt: "La Estrella" },
+    { nombre: "la_luna", alt: "La Luna" },
+    { nombre: "el_sol", alt: "El Sol" },
+    { nombre: "la_torre", alt: "La Torre" },
+    { nombre: "la_emperatriz", alt: "La Emperatriz" },
+    { nombre: "el_mago", alt: "El Mago" },
+    { nombre: "la_justicia", alt: "La Justicia" },
+    { nombre: "el_ermitano", alt: "El Ermitaño" }
+  ];
+
+  let mazoRestante = [...todasLasCartas];
+  let intervalID;
+
+  function mezclarMazo(mazo) {
+    for (let i = mazo.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [mazo[i], mazo[j]] = [mazo[j], mazo[i]];
+    }
+    return mazo;
   }
+function generateTarotReading() {
+  clearInterval(intervalID);
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = ''; // 🔧 Limpia contenido previo
 
-  setInterval(cambiarMensaje, 3000);
-</script>
+  const mensaje = document.createElement('p');
+  mensaje.style.fontSize = '1.2rem';
+  mensaje.innerText = '';
+  resultDiv.appendChild(mensaje);
 
-<!-- Header -->
-<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
-  <div class="w3-display-middle w3-margin-top w3-center">
-  </div>
-</header>
+  const deckContainer = document.createElement('div');
+  deckContainer.style.position = 'relative';
+  deckContainer.style.width = '220px';
+  deckContainer.style.height = '300px';
+  deckContainer.style.margin = '1rem auto';
+  deckContainer.style.perspective = '1000px';
+  resultDiv.appendChild(deckContainer);
+
+  const cartasVisual = mezclarMazo([...todasLasCartas]);
+
+  const cartaImgs = cartasVisual.map((carta, index) => {
+    const img = document.createElement('img');
+    img.src = `cartas/${carta.nombre}.jpg`;
+    img.alt = carta.alt;
+    img.style.position = 'absolute';
+    img.style.top = '0px';
+    img.style.left = '0px';
+    img.style.width = '200px';
+    img.style.borderRadius = '12px';
+    img.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.3)';
+    img.style.transition = 'all 0.4s ease';
+    img.style.zIndex = index;
+    deckContainer.appendChild(img);
+    return img;
+  });
+
+  let shuffleCount = 0;
+  const totalShuffles = 10;
+  const shuffleInterval = setInterval(() => {
+    cartaImgs.forEach((img) => {
+      const offsetX = Math.random() * 80 - 40;
+      const offsetY = Math.random() * 80 - 40;
+      const rotate = Math.random() * 360;
+      const scale = 0.9 + Math.random() * 0.2; // entre 0.9 y 1.1
+      const opacity = 0.7 + Math.random() * 0.3; // entre 0.7 y 1
+      const z = Math.floor(Math.random() * 100);
+
+      img.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotate}deg) scale(${scale})`;
+      img.style.opacity = opacity;
+      img.style.zIndex = z;
+    });
 
 
-<style>
-  .carouselSlides {
-    display: block; /* Asegura que la imagen ocupe todo el ancho */
-    margin: auto; /* Centra la imagen horizontalmente */
-    max-width: 100%; /* Asegura que la imagen no sea más grande que el contenedor */
-    width: 100%; 
-    height: 100%; /* Mantiene la proporción */
-    object-fit: contain; 
-  }
+    shuffleCount++;
+    if (shuffleCount >= totalShuffles) {
+      clearInterval(shuffleInterval);
 
-  
+      setTimeout(() => {
+        deckContainer.innerHTML = '';
 
-
-
-  
-  .marquee {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px; /* Ajusta la altura según necesites */
-  }
-
-  .whatsapp-float {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 9999; /* Siempre por encima de todo */
-        background-color: #25D366;
-        color: white;
-        border-radius: 50px;
-        padding: 12px;
-        text-decoration: none;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        transition: 0.3s;
-    }
-
-    .whatsapp-float:hover {
-        background-color: #1ebe5d;
-    }
-
-    .whatsapp-float img {
-        width: 45px;
-        height: 45px;
-        margin-right: 10px;
-    }
-
-    .chat-label {
-        font-size: 16px;
-        color: white;
-    }
-
-    /* Ajuste para dispositivos móviles */
-    @media (max-width: 600px) {
-        .whatsapp-float {
-            bottom: 15px;
-            right: 15px;
-            padding: 10px;
+        if (mazoRestante.length === 0) {
+          mazoRestante = mezclarMazo([...todasLasCartas]);
         }
 
-        .whatsapp-float img {
-            width: 40px;
-            height: 40px;
-        }
+        const cartaFinal = mazoRestante.pop();
+        const finalImg = document.createElement('img');
+        finalImg.src = `cartas/${cartaFinal.nombre}.jpg`;
+        finalImg.alt = cartaFinal.alt;
+        finalImg.style.width = '200px';
+        finalImg.style.borderRadius = '12px';
+        finalImg.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
+        finalImg.style.transform = 'scale(1.15)';
+        finalImg.style.transition = 'transform 0.5s ease';
 
-        .chat-label {
-            font-size: 14px;
-        }
+        deckContainer.appendChild(finalImg);
+      }, 500);
     }
-</style>
-
-  <!-- Botón flotante de WhatsApp -->
-<a href="https://api.whatsapp.com/send?phone=573018267113&text=Hola,%20quiero%20más%20información%20sobre%20sus%20productos" 
-class="whatsapp-float" target="_blank">
- <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
- <span class="chat-label">💬 En línea</span>
-</a>
-
-<!-- Page content -->
-<div class="w3-content w3-padding" style="max-width:1564px">
-  <br>
-  <!-- Carrusel de imágenes -->
-<div class="w3-content w3-display-container" style="max-width:600px; margin:auto;">
-  <br>
-  <div class="w3-content w3-display-container" style="max-width:500px">
-    <div class="marquee" style="align-items: center;">
-      <br>
-      <br>
-      
-    </div>
-    <img class="carouselSlides" src="img/1.png" style="width:50%">
-
-    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
-  </div>
-</div>
-
-<script>
-  let slideIndex = 0;
-  showSlides();
-
-  function showSlides() {
-    let slides = document.getElementsByClassName("carouselSlides");
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) { slideIndex = 1 }
-    slides[slideIndex - 1].style.display = "block";
-    setTimeout(showSlides, 3000); // Cambia la imagen cada 3 segundos
-  }
-
-  function plusDivs(n) {
-    slideIndex += n - 1;
-    showSlides();
-  }
-</script>
-
-  <br>
-  <br>
-  <p class="w3-large w3-center w3-margin-top">
-    Descubre la magia de nuestras manillas y lleva contigo un símbolo de fe, amor y protección.</strong>  
-    <br>✨💖 <strong>¡Encuentra la tuya hoy!</strong> 💖✨
-  </p>
-  <br><br>
-  <style>
-    .product-image-container {
-    width: 100%;
-    height: 220px; /* Ajusta según necesites */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background-color: white; /* Para evitar espacios vacíos oscuros */
+  }, 400);
 }
 
-.product-image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Evita que las imágenes se corten */
+
+  function generateLuckyNumber() {
+    clearInterval(intervalID);
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = "Sintonizando con tu energía interior...";
+
+    setTimeout(() => {
+      const number = 1 + Math.floor(Math.random() * 99);
+      resultDiv.innerHTML = `<div style="font-size: 2rem;">Tu número de la suerte es: <strong>${number}</strong></div>`;
+    }, 3000);
+  }
+
+
+  function responderPreguntaSiNo() {
+  clearInterval(intervalID);
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = "Descifrando las señales que te envía el universo...";
+
+  setTimeout(() => {
+    const respuestas = ["Sí 💫", "No ❌"];
+    const respuesta = respuestas[Math.floor(Math.random() * respuestas.length)];
+    resultDiv.innerHTML = `<div style="font-size: 2rem;">${respuesta}</div>`;
+  }, 3000);
 }
 
-  </style>
-  
-  <!-- Tarjeta de Producto -->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">VIRGEN DE GUADALUPE</div>
-          
-         <!-- Etiqueta de Descuento -->
-          <!-- Etiqueta de Descuento -->
-          <div class="w3-display-topright w3-red w3-tiny w3-padding-small w3-round" 
-          style="font-size: 10px; padding: 2px 5px; margin-top: 20px; z-index: 10;">
-          -20% OFF
-          </div>
-
-
-          <div class="product-image-container">
-              <img src="img/1.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 119.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/img2.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Exclusiva VIRGEN DE GUADALUPE</p>
-          <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-          <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-          <p><strong>Características :</strong> "12 balines y un dije de la VIRGEN DE GUADALUPE en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-          <p><strong>Precio:</strong> 💲 119.900 <span style="color: red; text-decoration: line-through;">💲 143.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
- 
-  <!-- Tarjeta de Producto -->
-  <div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">VIRGEN DE GUADALUPE</div>
-            
-           <!-- Etiqueta de Descuento -->
-            <!-- Etiqueta de Descuento -->
-            <div class="w3-display-topright w3-red w3-tiny w3-padding-small w3-round" 
-            style="font-size: 10px; padding: 2px 5px; margin-top: 20px; z-index: 10;">
-            -20% OFF
-            </div>
-  
-  
-            <div class="product-image-container">
-                <img src="img/142-removebg-preview.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 139.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles23').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles23" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles23').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/142-removebg-preview.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva VIRGEN DE GUADALUPE</p>
-            <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-            <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-            <p><strong>Características :</strong> "8 balines y un dije de la VIRGEN DE GUADALUPE en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-            <p><strong>Precio:</strong> 💲 139.900 <span style="color: red; text-decoration: line-through;">💲 173.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles23').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-  
-<!-- Producto 2 -->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">EXCLUSIVA</div>
-            
-            <div class="product-image-container">
-                <img src="img/img2.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 189.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles21').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles21" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles21').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/img2.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva</p>
-            <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-            <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-            <p><strong>Características :</strong> "38 balines en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-            <p><strong>Precio:</strong> 💲 189.900<span style="color: red; text-decoration: line-through;">💲 219.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles21').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-  
-<!-- Producto 2 -->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">SAN BENITO</div>
-          
-          <div class="product-image-container">
-              <img src="img/2.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 79.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles2').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles2" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles2').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/2.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Exclusiva San Benito</p>
-          <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-          <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-          <p><strong>Características :</strong> "4 balines en Oro Golfi y un dije de San Benito en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-          <p><strong>Precio:</strong> 💲 79.900 <span style="color: red; text-decoration: line-through;">💲 89.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles2').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-<!-- Producto 2 -->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">SAN BENITO</div>
-          <div class="promo-label">EN PROMOCIÓN</div>
-
-          <div class="product-image-container">
-              <img src="img/Screenshot_6.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 99.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles22').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles22" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles22').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/Screenshot_6.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Exclusiva San Benito</p>
-          <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-          <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-          <p><strong>Características :</strong> "8 balines y un dije de San Benito en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-          <p><strong>Precio:</strong> 💲 99.900 <span style="color: red; text-decoration: line-through;">💲 119.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles22').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-
-<!-- Producto 3-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">SAN BENITO</div>
-          
-          <div class="w3-display-topright w3-red w3-tiny w3-padding-small w3-round">
-          -24% OFF
-          </div>
-          <div class="product-image-container">
-              <img src="img/3.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 139.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles3').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles3" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles3').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/3.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Exclusiva San Benito</p>
-          <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-          <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-        <p><strong>Características :</strong> "12 balines y un dije de San Benito en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-          <p><strong>Precio:</strong> 💲 139.900 <span style="color: red; text-decoration: line-through;">💲 169.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles3').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-
-
-
-<!-- Producto 4-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">HOMBRE</div>
-          
-          <div class="promo-label">EN PROMOCIÓN</div>
-          <div class="product-image-container">
-              <img src="img/5.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 199.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles5').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles5" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles5').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/5.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Exclusiva HOMBRE</p>
-          <p><strong>Disponibilidad:</strong> Unisex, en colores rojo y negro, con opción de personalización.</p>
-          <p><strong>Material:</strong> Oro laminado 18K y tejido en hilo chino de alta resistencia.</p>
-             <p><strong>Características :</strong> "6 balines en oro laminado de 18K y 3 balines en Nuepreno, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-          <p><strong>Precio:</strong> 💲 199.900 <span style="color: red; text-decoration: line-through;">💲 230.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles5').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-
-
-
-<!-- Producto 5-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">MUJER</div>
-          
-
-          <div class="product-image-container">
-              <img src="img/4.jpg" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 99.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles4').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles4" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles4').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/4.jpg" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Exclusiva</p>
-          <p><strong>Disponibilidad:</strong> En colores rojo y negro, con opción de personalización.</p>
-          <p><strong>Material:</strong> Oro laminado 18K</p>
-          <p><strong>Características :</strong> "8 balines en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-          <p><strong>Precio:</strong> 💲 99.900 <span style="color: red; text-decoration: line-through;">💲 89.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles4').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-
-
-<!-- Producto 6-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">PAREJA</div>
-  
-            <!-- Etiqueta "EN PROMOCIÓN" en diagonal -->
-            <div class="promo-label">EN PROMOCIÓN</div>
-  
-            <div class="product-image-container">
-                <img src="img/pareja1.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 189.900</strong></p>
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles6').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-
-    <!-- Modal de Detalles -->
-<div id="modalDetalles6" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles6').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/pareja1.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva en PAREJA</p>
-            <p><strong>Disponibilidad:</strong> En colores rojo y negro, con opción de personalización.</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "5 balines en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y AMOR"</p>
-            <p><strong>Precio:</strong> 💲 189.900 <span style="color: red; text-decoration: line-through;">💲 223.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles6').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-  
-  
-  </div>
-  
-  <!-- Agregar CSS -->
-  <style>
-    .promo-label {
-        position: absolute;
-        top: 10px;
-        right: -20px;
-        background: rgb(24, 182, 255);
-        color: white;
-        font-size: 12px;
-        font-weight: bold;
-        padding: 5px 10px;
-        transform: rotate(25deg);
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    }
-  </style>
-  
-
-
-
-<!-- Producto 7-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">ANILLO</div>
-          
-            <!-- Etiqueta "EN PROMOCIÓN" en diagonal -->
-            <div class="promo-label">EN PROMOCIÓN</div>
-          <div class="product-image-container">
-              <img src="img/9.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Anillos Unisex ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 59.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles7').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles7" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles7').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/9.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Anillo Exclusivo</p>
-          <p><strong>Material:</strong> Oro laminado 18K</p>
-          <p><strong>Características :</strong> "3 balines en Oro Laminado y dos Balines en Plata. Este anillo es ideal si buscas elegancia"</p>
-          <p><strong>Precio:</strong> 💲 59.900 <span style="color: red; text-decoration: line-through;">💲 89.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles7').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-
-
-<!-- Producto 8-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-  <div class="w3-card w3-round w3-white w3-padding w3-center">
-      <div class="w3-display-container">
-          <!-- Etiqueta de "SAN BENITO" -->
-          <div class="w3-display-topleft w3-black w3-small w3-padding-small">MANILLA DORADA</div>
-          <div class="promo-label">EN PROMOCIÓN</div>
-
-          <div class="product-image-container">
-              <img src="img/img4.png" alt="House">
-          </div>
-      </div>
-      
-      <div class="w3-container w3-padding-16">
-          <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-
-          <!-- Precio con descuento -->
-          <p class="w3-large"><strong>💲 439.900</strong></p>
-          <!-- Precio original tachado en rojo -->
-
-          <!-- Botón de Cotizar -->
-          <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-             target="_blank" 
-             class="w3-button w3-green w3-round w3-block">
-              <i class="fa fa-whatsapp"></i> Cotizar
-          </a>
-
-          <!-- Botón de Detalles -->
-          <button onclick="document.getElementById('modalDetalles8').style.display='block'" 
-                  class="w3-button w3-blue w3-round w3-block w3-margin-top">
-              <i class="fa fa-info-circle"></i> Detalles
-          </button>
-      </div>
-  </div>
-</div>
-
-<!-- Modal de Detalles -->
-<div id="modalDetalles8" class="w3-modal">
-  <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-      <header class="w3-container w3-blue">
-          <span onclick="document.getElementById('modalDetalles8').style.display='none'" 
-                class="w3-button w3-display-topright w3-large">&times;</span>
-          <h4>Detalles del Producto</h4>
-      </header>
-      <div class="w3-container w3-padding">
-          <img src="img/img4.png" alt="House" class="w3-image w3-center w3-round">
-          <p><strong>Tipo:</strong> Manilla Dorada doble carril</p>
-          <p><strong>Material:</strong> Oro laminado 18K</p>
-          <p><strong>Características :</strong> "40 balines en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y sobresalir en todo momento"</p>
-          <p><strong>Precio:</strong> 💲 439.900 <span style="color: red; text-decoration: line-through;">💲 699.888</span></p>
-      </div>
-      <footer class="w3-container w3-padding w3-center">
-          <button onclick="document.getElementById('modalDetalles8').style.display='none'" 
-                  class="w3-button w3-red w3-round">
-              Cerrar
-          </button>
-      </footer>
-  </div>
-</div>
-
-
-<!-- Producto 9-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">UNISEX</div>
-            
-  
-            <div class="product-image-container">
-                <img src="img//10.jpeg" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 139.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles9').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles9" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles9').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/10.jpeg" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "12 balines en oro laminado de 18K y 3 balines en Neupreno, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia"</p>
-            <p><strong>Precio:</strong> 💲 139.900 <span style="color: red; text-decoration: line-through;">💲 189.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles9').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-  
-  
-
-  <!-- Producto 10-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">PAREJA</div>
-            
-            <div class="promo-label">EN PROMOCIÓN</div>
-
-            <div class="product-image-container">
-                <img src="img/11.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 219.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles10').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles10" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles10').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/11.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva PAREJA</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "10 balines en oro laminado de 18K Y 8 en Neupreno, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y AMOR"</p>
-            <p><strong>Precio:</strong> 💲 219.900 <span style="color: red; text-decoration: line-through;">💲 279.900</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles10').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-  
-  
-
-  <!-- Producto 11-->
-  <div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">PAREJA PROTECCION SAN BENITO</div>
-            
-  
-            <div class="product-image-container">
-                <img src="img/12.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 339.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles11').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles11" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles11').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/12.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva San Benito para Parejas</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "26 balines y un dije de San Benito en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-            <p><strong>Precio:</strong> 💲 339.900 <span style="color: red; text-decoration: line-through;">💲 379.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles11').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-
-  
-  <!-- Producto 12-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">PAREJA</div>
-            
-            <div class="promo-label">EN PROMOCIÓN</div>
-
-            <div class="product-image-container">
-                <img src="img/13.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 189.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles12').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles12" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles12').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/13.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva Parejas</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "6 balines en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y AMOR"</p>
-            <p><strong>Precio:</strong> 💲 189.900 <span style="color: red; text-decoration: line-through;">💲 219.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles12').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-
-
-  
-  <!-- Producto 13-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">SAN BENITO</div>
-            
-  
-            <div class="product-image-container">
-                <img src="img/14.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Manilla Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 139.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles13').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles13" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles13').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/14.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Manilla Exclusiva San Benito</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "6 balines y un dije de San Benito en oro laminado de 18K, acompañado de una bolsa de tela para almacenamiento. Esta manilla es ideal si buscas elegancia y protección"</p>
-            <p><strong>Precio:</strong> 💲 139.900 <span style="color: red; text-decoration: line-through;">💲 169.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles13').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-
-
-   
-  <!-- Producto 14-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">ANILLOS</div>
-            
-  
-            <div class="product-image-container">
-                <img src="img/15.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Anillos Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 69.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles14').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles14" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles14').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/15.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Anillo Exclusivo</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "12 balines en oro laminado de 18K. Este anillo es ideal si buscas elegancia y calidad"</p>
-            <p><strong>Precio:</strong> 💲 69.900 <span style="color: red; text-decoration: line-through;">💲 89.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles14').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-
-
-   
-  <!-- Producto 15-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">ANILLOS</div>
-            
-  
-            <div class="product-image-container">
-                <img src="img/16.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Anillos Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 69.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles15').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles15" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles15').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/16.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Anillo Exclusiva</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "12 balines en oro laminado de 18K. Este anillo es ideal si buscas elegancia y calidad"</p>
-            <p><strong>Precio:</strong> 💲 69.900 <span style="color: red; text-decoration: line-through;">💲 89.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles15').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-
-   
-  <!-- Producto 16-->
-<div class="w3-col l3 m6 s12 w3-margin-bottom w3-padding">
-    <div class="w3-card w3-round w3-white w3-padding w3-center">
-        <div class="w3-display-container">
-            <!-- Etiqueta de "SAN BENITO" -->
-            <div class="w3-display-topleft w3-black w3-small w3-padding-small">ANILLOS</div>
-            <div class="promo-label">EN PROMOCIÓN</div>
-
-  
-            <div class="product-image-container">
-                <img src="img/17.png" alt="House">
-            </div>
-        </div>
-        
-        <div class="w3-container w3-padding-16">
-            <h5 class="w3-small">✨ Anillos Exclusiva ✨</h5>
-  
-            <!-- Precio con descuento -->
-            <p class="w3-large"><strong>💲 59.900</strong></p>
-            <!-- Precio original tachado en rojo -->
-  
-            <!-- Botón de Cotizar -->
-            <a href="https://wa.me/573018267113?text=Hola%2C%20quiero%20cotizar%20la%20manilla%20exclusiva" 
-               target="_blank" 
-               class="w3-button w3-green w3-round w3-block">
-                <i class="fa fa-whatsapp"></i> Cotizar
-            </a>
-  
-            <!-- Botón de Detalles -->
-            <button onclick="document.getElementById('modalDetalles16').style.display='block'" 
-                    class="w3-button w3-blue w3-round w3-block w3-margin-top">
-                <i class="fa fa-info-circle"></i> Detalles
-            </button>
-        </div>
-    </div>
-  </div>
-  
-  <!-- Modal de Detalles -->
-  <div id="modalDetalles16" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-round-large" style="max-width: 500px;">
-        <header class="w3-container w3-blue">
-            <span onclick="document.getElementById('modalDetalles16').style.display='none'" 
-                  class="w3-button w3-display-topright w3-large">&times;</span>
-            <h4>Detalles del Producto</h4>
-        </header>
-        <div class="w3-container w3-padding">
-            <img src="img/17.png" alt="House" class="w3-image w3-center w3-round">
-            <p><strong>Tipo:</strong> Anillo Exclusivo</p>
-            <p><strong>Material:</strong> Oro laminado 18K</p>
-            <p><strong>Características :</strong> "5 balines en oro laminado de 18K. Este anillo es ideal si buscas elegancia y calidad"</p>
-            <p><strong>Precio:</strong> 💲  59.900 <span style="color: red; text-decoration: line-through;">💲 89.888</span></p>
-        </div>
-        <footer class="w3-container w3-padding w3-center">
-            <button onclick="document.getElementById('modalDetalles16').style.display='none'" 
-                    class="w3-button w3-red w3-round">
-                Cerrar
-            </button>
-        </footer>
-    </div>
-  </div>
-
-  <div class="w3-container w3-padding-32" id="about">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16 w3-center">✨ Acerca de nuestros productos ✨</h3>
-
-    <p class="w3-large w3-center w3-margin-bottom">
-        En <strong>TOP FLAAY</strong>, nos especializamos en ofrecerte <strong>manillas de oro laminado de 18K</strong> con diseños únicos y significativos.
-        Cada pieza está cuidadosamente elaborada para brindarte <strong>elegancia, calidad y un toque especial de espiritualidad y amor</strong>.
-    </p>
-
-    <div class="w3-row-padding">
-        <div class="w3-col l6 m12 w3-margin-bottom">
-            <div class="w3-card w3-white w3-padding w3-round">
-                <h4>✅ Calidad que brilla</h4>
-                <p>Nuestras manillas están hechas de <strong>oro laminado de 18K</strong>, un material resistente y duradero que mantiene su brillo con el tiempo. 
-                Perfectas para cualquier ocasión sin preocuparte por el desgaste.</p>
-            </div>
-        </div>
-
-        <div class="w3-col l6 m12 w3-margin-bottom">
-            <div class="w3-card w3-white w3-padding w3-round">
-                <h4>✅ Símbolos con significado</h4>
-                <p>Las joyas cuentan historias. Encuentra <strong>dijes de San Benito</strong> para protección, <strong>la Virgen de Guadalupe</strong> para bendiciones 
-                y <strong>manillas para parejas</strong> como símbolo de unión eterna.</p>
-            </div>
-        </div>
-
-        <div class="w3-col l6 m12 w3-margin-bottom">
-            <div class="w3-card w3-white w3-padding w3-round">
-                <h4>🎁 El regalo perfecto</h4>
-                <p>Ya sea para consentirte o sorprender a alguien especial, nuestras manillas son una opción ideal. 
-                Su diseño versátil las hace perfectas para cualquier estilo y ocasión.</p>
-            </div>
-        </div>
-
-        <div class="w3-col l6 m12 w3-margin-bottom">
-            <div class="w3-card w3-white w3-padding w3-round">
-                <h4>✅ Cuidados sencillos, belleza duradera</h4>
-                <p>Con un mantenimiento adecuado, nuestras piezas seguirán brillando como el primer día. 
-                Evita el contacto con químicos agresivos y guárdalas en un lugar seguro cuando no las uses.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- Footer Mejorado -->
-<footer class="w3-center w3-black w3-padding-32">
-  <p>📞 Atención al Cliente: <strong>+57 301 8267113</strong></p>
-  
-  <p>🔒 Compras 100% seguras | 💳 Aceptamos pagos con tarjeta y transferencias</p>
-
-  <!-- Métodos de pago con imágenes -->
-  <div class="payment-methods">
-    <img src="img/nequi.png" alt="Nequi" class="payment-logo">
-    <img src="img/daviplata.png" alt="Daviplata" class="payment-logo">
-    <img src="img/bancolombia.png" alt="Bancolombia" class="payment-logo">
-  </div>
-
-  <p>📦 Envíos a todo el país | 🚀 Garantía de satisfacción</p>
-
-  <p>
-    <a href="#" class="w3-hover-text-green">Términos y Condiciones</a> | 
-    <a href="#" class="w3-hover-text-green">Política de Privacidad</a>
-  </p>
-
-  <p>&copy; 2025 <strong>TOP FLAAY</strong>. Todos los derechos reservados.</p>
-</footer>
-
-<!-- Estilos personalizados -->
-<style>
-  .payment-methods {
-    margin: 10px 0;
-  }
-
-  .payment-logo {
-    width: 80px; /* Ajusta el tamaño de los logos */
-    height: 60px;
-    margin: 0 10px;
-    vertical-align: middle;
-    border-radius: 20%;
-  }
-
-  @media (max-width: 600px) {
-    .payment-logo {
-      width: 60px; /* Ajuste responsivo para móviles */
-    }
-  }
-</style>
-
+</script>
 
 </body>
 </html>
