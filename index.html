@@ -15,7 +15,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 1rem;
-      background-image: url('2.jpg');
+      background-image: url('cristal.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -27,7 +27,7 @@
       flex-direction: column;
       justify-content: center;
     }
-
+      
     .input-container {
       background-color: rgba(0, 0, 0, 0.5);
       padding: 20px;
@@ -84,13 +84,16 @@
    <p>🎁 Sígueme y te doy un número de la suerte</p>
     <p>🌹 Deja una rosa y te respondo una pregunta con sí o no</p>
     <p>🍩 Deja una rosquilla y te doy una carta del tarot</p>
+    <p>🧢 Deja una gorra y te responhdo una pregunta de si o no con carta del tarot</p>
 </div>
 
 </div>
   <div class="input-container">
-  <button onclick="generateTarotReading()">Consultar Tarot</button>
+  <button onclick="generateTarotReading()">Mensaje del Tarot</button>
   <button onclick="generateLuckyNumber()">Preguntar Número de la Suerte</button>
   <button onclick="responderPreguntaSiNo()">Pregunta de Sí o No</button>
+  <button onclick="consultarPreguntaConCartas()">Consultar pregunta con cartas especiales</button>
+
   </div>
 
 
@@ -104,6 +107,14 @@
     "Interpretando señales del más allá... 🌠",
     "Consultando al oráculo del tarot... 🃏",
     "Visualizando tu camino espiritual... 🌙"
+  ];
+  const cartasPregunta = [
+    { nombre: "el_sol", alt: "El Sol - Sí" },
+    { nombre: "el_mundo", alt: "El Mundo - Sí" },
+    { nombre: "la_torre", alt: "La Torre - No" },
+    { nombre: "el_diablo", alt: "El Diablo - No" },
+    { nombre: "la_luna", alt: "La Luna - Depende" },
+    { nombre: "el_colgado", alt: "El Colgado - Depende" }
   ];
 
   const todasLasCartas = [
@@ -129,6 +140,87 @@
     }
     return mazo;
   }
+
+function consultarPreguntaConCartas() {
+  clearInterval(intervalID);
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = '';
+
+  const mensaje = document.createElement('p');
+  mensaje.style.fontSize = '1.2rem';
+  mensaje.innerText = '';
+  resultDiv.appendChild(mensaje);
+
+  const deckContainer = document.createElement('div');
+  deckContainer.style.position = 'relative';
+  deckContainer.style.width = '220px';
+  deckContainer.style.height = '300px';
+  deckContainer.style.margin = '1rem auto';
+  deckContainer.style.perspective = '1000px';
+  resultDiv.appendChild(deckContainer);
+
+  const cartasVisual = mezclarMazo([...cartasPregunta]);
+
+  const cartaImgs = cartasVisual.map((carta, index) => {
+    const img = document.createElement('img');
+    img.src = `cartas/${carta.nombre}.jpg`;
+    img.alt = carta.alt;
+    img.style.position = 'absolute';
+    img.style.top = '0px';
+    img.style.left = '0px';
+    img.style.width = '200px';
+    img.style.borderRadius = '12px';
+    img.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.3)';
+    img.style.transition = 'all 0.4s ease';
+    img.style.zIndex = index;
+    deckContainer.appendChild(img);
+    return img;
+  });
+
+  let shuffleCount = 0;
+  const totalShuffles = 8;
+  const shuffleInterval = setInterval(() => {
+    cartaImgs.forEach((img) => {
+      const offsetX = Math.random() * 60 - 30;
+      const offsetY = Math.random() * 60 - 30;
+      const rotate = Math.random() * 360;
+      const scale = 0.9 + Math.random() * 0.2;
+      const opacity = 0.7 + Math.random() * 0.3;
+      const z = Math.floor(Math.random() * 100);
+
+      img.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotate}deg) scale(${scale})`;
+      img.style.opacity = opacity;
+      img.style.zIndex = z;
+    });
+
+    shuffleCount++;
+    if (shuffleCount >= totalShuffles) {
+      clearInterval(shuffleInterval);
+
+      setTimeout(() => {
+        deckContainer.innerHTML = '';
+        const cartaFinal = cartasVisual[0];
+        const finalImg = document.createElement('img');
+        finalImg.src = `cartas/${cartaFinal.nombre}.jpg`;
+        finalImg.alt = cartaFinal.alt;
+        finalImg.style.width = '200px';
+        finalImg.style.borderRadius = '12px';
+        finalImg.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
+        finalImg.style.transform = 'scale(1.15)';
+        finalImg.style.transition = 'transform 0.5s ease';
+
+        deckContainer.appendChild(finalImg);
+
+        const texto = document.createElement('p');
+        texto.style.marginTop = '1rem';
+        texto.style.fontSize = '1.2rem';
+        texto.innerText = cartaFinal.alt;
+        resultDiv.appendChild(texto);
+      }, 500);
+    }
+  }, 400);
+}
+
 function generateTarotReading() {
   clearInterval(intervalID);
   const resultDiv = document.getElementById('result');
@@ -207,6 +299,9 @@ function generateTarotReading() {
       }, 500);
     }
   }, 400);
+
+
+  
 }
 
 
@@ -235,6 +330,21 @@ function generateTarotReading() {
 }
 
 </script>
+
+<!-- AL FINAL, justo antes de cerrar el body -->
+<img src="humo.gif" alt="Humo místico" style="
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;">
+</body>
+</html>
+
 
 </body>
 </html>
